@@ -4,6 +4,7 @@ using namespace std;
 
 /**
  * Program to calculate the average of numbers stored in a text file.
+ * By Tim Buranicz, Tom Freier
 */
 
 //CWE-483: In every block, delimiters in the form of braces are used in order to make sure
@@ -15,6 +16,12 @@ using namespace std;
 const static int MAX_ARRAY_SIZE = 100;
 int readInData(ifstream &file, int* dest);
 
+/**
+ * Method to read in data from file
+ * @param file File to read from
+ * @param dest Destination value
+ * @return Returns array size
+ */
 int readInData(ifstream &file, int* dest){
     string txt = "";
     int index = -1;
@@ -37,7 +44,11 @@ int readInData(ifstream &file, int* dest){
     }
 }
 
-int main(int argc, char** argv){
+/**
+ * Main function
+ * @return Returns 0
+ */
+int main(){
     string fileName="";
     int numArray[MAX_ARRAY_SIZE]; 
 
