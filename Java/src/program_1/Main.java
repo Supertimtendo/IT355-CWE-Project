@@ -11,6 +11,17 @@ import java.util.Scanner;
  * Main driver class, inputs a data file that contains 3 lines:
  * class type (char), name (String), level (int) in that order on separate lines
  */
+
+// CWE-209: Using manual try-catch or throws helps to avoid sensitive info being revealed by
+// the compiler, and staying aware of what info you print via errors is important
+
+// CWE-248: This program ensures that any exception used is always caught, making sure that
+// the system does not go into an unexpected state
+
+// CWE-460: When an error is thrown, the system exits or is cleaned up to ensure that no
+// unexpected behavior occurs. Additionally, no error is thrown within a deeply nested
+// logic function
+
 public class Main {
     public static void main(String[] args){
         Main main = new Main();
@@ -39,8 +50,11 @@ public class Main {
                 info.add(data);
             }
         }
+        // CWE-537: This statement avoids printing out sensitive information about the file system
+        // of the system, minimizing exposed information
         catch (FileNotFoundException e){
-            System.out.println(e);
+            System.out.println("File not found");
+            System.exit(1);
         }
         return info;
     }
