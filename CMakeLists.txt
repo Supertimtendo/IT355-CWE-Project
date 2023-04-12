@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(C++)
 
 add_executable(IT355_CWE_Project
-        C++/program1.cpp)
+        C/program1.c)
