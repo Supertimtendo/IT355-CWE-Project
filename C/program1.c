@@ -1,8 +1,14 @@
+//Created by Tim Buranicz
+
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include "program1.h"
 
+/**
+ * Program to convert strings in a variety of ways
+ * @return
+ */
 int main(){
     //CWE-170: This char array is properly terminated since there
     //is no explicit size given, it is important to be aware of this
@@ -24,6 +30,11 @@ int main(){
     return 0;
 }
 
+/**
+ * Function that converts a word from lowercase to uppercase
+ * @param word Word to convert
+ * @return Returns uppercase word
+ */
 char* convertUpper(char* word){
     //CWE-467: Using sizeof on a pointer will return the size of the pointer
     //therefore you should be aware of what you are inputting into it, and what
@@ -35,6 +46,7 @@ char* convertUpper(char* word){
     return word;
 }
 
+//TODO Implement
 char* convertLower(char* word){
 
 }
