@@ -1,7 +1,7 @@
 /**
  * @file Main.cpp
  * @author Trevor Murphy & Tim Lewis
- * -Tim will not appear in commits as we worked together via Live Share
+ * -Tim L will not appear in commits as we worked together via Live Share
  * @brief does calculations on no more than 10 numbers
  * @version 0.1
  * @date 2023-04-10
