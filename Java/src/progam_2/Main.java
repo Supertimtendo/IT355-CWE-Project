@@ -1,6 +1,6 @@
 /**
  * Program 2
- * Authors: Trevor Murphy, Tim Lewis
+ * Authors: Trevor Murphy, Tim Lewis, 
  * -Trevor and Tim L worked together on creating the program via live share so Tim L will not appear in the commit history for that part
  */
 
