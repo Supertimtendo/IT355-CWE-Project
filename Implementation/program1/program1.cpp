@@ -16,11 +16,21 @@ using namespace std;
  * By Tim Buranicz, Tom Freier
 */
 
+//CWE-125: This program makes sure to prevent any out-of-bounds read as it ensures that no buffer is
+//read or written past its bounds
+
+//CWE-126: No buffer is read past its allotted amount
+
+//CWE-127: No buffer is read before its allotted amount
+
+//CWE-129: All arrays used have checks in place to ensure that when reading/writing, the size is
+//always checked prior
 
 const static int MAX_ARRAY_SIZE = 100;
 int readInData(ifstream &file, int* dest);
 string getUserInput();
 void convertToLongArray(int* src, long* dest);
+
 /**
  * Method to read in data from file
  * @param file File to read from
@@ -47,12 +57,17 @@ int readInData(ifstream &file, int* dest){
         return index;// returning the size of the array
     }
 }
+
+/**
+ * Checks if file exists and that it is .txt file extension
+ * @return Returns name of input file
+ */
 string getUserInput(){
     string fileName="";
     cout<<"Enter data file name: ";
     cin >> fileName;
     
-    // Data Cancolization: Removing all whitespace from the string
+    // Data Cancellation: Removing all whitespace from the string
     fileName.erase(remove(fileName.begin(), fileName.end(), ' '), fileName.end());
     
     
@@ -61,10 +76,10 @@ string getUserInput(){
      * Accomplished by doing that data validization only AFTER the data has been cancolized
      * Invalid data can be generated from the canonicalization/cleansing process, so we must validate our data only AFTER these processes have been done
     */
-    // Data Validization: Ensuring input ends in .txt
+    // Data Validation: Ensuring input ends in .txt
     size_t extensionPos = fileName.find(".txt");
     if(extensionPos == fileName.npos){
-        cout<<"ERROR: Input does not end in .txt"<<endl;
+        cerr<<"ERROR: Input does not end in .txt"<<endl;
         return ""; // returning empty string
     }
     else{
@@ -73,6 +88,12 @@ string getUserInput(){
     
 }
 
+/**
+ * Converts an int array to a long array
+ * @param src Input int array
+ * @param dest Output long array
+ * @param size Size of src
+ */
 void convertToLongArray(int* src, long* dest, int size){
     /**
      * Example of common CWE-193: Off by-one errors that could happen
@@ -85,8 +106,10 @@ void convertToLongArray(int* src, long* dest, int size){
         }
     */
     // These errors are avoided by correctly understanding how for loops work 
-    // Additionally, this code includes a debugging technique of printing the indexes so the programmer can indentify how many times the loops has ran
+    // Additionally, this code includes a debugging technique of printing the indexes so the programmer can identify how many times the loops has ran
 
+    //No check needed for size, since both arrays will be smaller than MAX_ARRAY_SIZE
+    //size variable is also checked prior to calling this method
     for(int i=0;i<size;i++){ // will run n times (as expected) avoiding CWE-193!
         printf("Ran %d times\n",i); // technique for avoiding CWE-193, so you can observe how many times the loop has ran
 
@@ -101,7 +124,7 @@ void convertToLongArray(int* src, long* dest, int size){
          * When converting from a larger to a smaller type, a validation mechanism must be used to ensure that the data is in a valid data range for the new type. 
          * Ex) int -> short may be unsafe, need to test int value to see if it in appopriate range for shorts
         */
-        dest[i] = (long) src[i]; // guranteed to be safe since long is a larger data type that int, ensuring it is in a valid range.
+        dest[i] = (long) src[i]; // guaranteed to be safe since long is a larger data type that int, ensuring it is in a valid range.
     }
 
 }
@@ -120,24 +143,30 @@ int main(){
             ifstream infile;
             infile.open(fileName);// opens the file
             int size = readInData(infile, intArray);
-            convertToLongArray(intArray,longArray,size);
-
-            // Computing average
-            long total = 0;
-            for(int i=0;i<size;i++){ // avoids CWE 193 since this loop will run n-times
-                if((total+longArray[i]) < numeric_limits<long>::max()){ // avoiding overflow
-                    total += longArray[i];
-                }
+            //Ensures buffer is big enough
+            if(size>MAX_ARRAY_SIZE){
+                std::cerr<<"File too big";
             }
-            double avg = total/size;
-            printf("Average: %f\n", avg);
-            infile.close();
+            else {
+                convertToLongArray(intArray,longArray,size);
+                // Computing average
+                long total = 0;
+                for (int i = 0; i < size; i++) { // avoids CWE 193 since this loop will run n-times
+                    if ((total + longArray[i]) < numeric_limits<long>::max()) { // avoiding overflow
+                        total += longArray[i];
+                    }
+                }
+                double avg = total / size;
+                printf("Average: %f\n", avg);
+                infile.close();
+            }
         }
         //CWE-396: Using try-catch and a non-generic exception helps to show what the error was
         //and how to resolve it, while also not revealing too much information
         catch(std::runtime_error e){
-            std::cout<<e.what();
+            std::cerr<<e.what();
         }
     }
+
     return 0;
 }  
