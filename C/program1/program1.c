@@ -56,9 +56,18 @@ int main(){
     fgets(upperCase,MAX_STRING_LENGTH-1,stdin); //MAX_STRING_LENGTH-1 is so that we have enough room for the null character
     upperCase = convertLower(upperCase);
     printf("%s\n", upperCase);
-    //CWE-825: Dereferencing this pointer explicitly frees it
-    //but one should be careful to make sure not to use a freed pointer
-    upperCase = NULL;
+
+    if(upperCase != NULL){
+        //CWE-825: Dereferencing this pointer explicitly frees it
+        //but one should be careful to make sure not to use a freed pointer
+        free(upperCase);
+        upperCase = NULL;
+    }
+    
+    // Avoids CWE-825 since pointer won't be used 
+    if(upperCase != NULL){
+        printf("%s\n",upperCase); // dangerous operation if upperCase is NULL, but is avoided
+    }
     return 0;
 }
 
