@@ -80,7 +80,6 @@ public class Main {
      * 
      * @param info List of data
      */
-    // TODO: Does not iterate over more than 1 obj, FIX
     private ArrayList<Job> addPeople(ArrayList<String> info) {
         ArrayList<Job> objs = new ArrayList<Job>();
 
@@ -107,15 +106,19 @@ public class Main {
         return objs;
     }
 
+    /**
+     * Prints each person in the list using their toString method
+     * @param info List of data to print
+     */
     private void printPeople(ArrayList<Job> info) {
         for (int i = 0; i < info.size(); i++) {
-            info.get(i).printInfo();
+            System.out.println(info.get(i));
         }
     }
 
     private static void runUntrustedMethod(Black_Mage job){
         System.out.println("Object before running unstrusted method");
-        job.printInfo();
+        System.out.println(job);
 
 
         /**
@@ -125,7 +128,7 @@ public class Main {
         System.out.println("\nRunning with a cloned object:");
         Untrusted.potentiallyDangerousMethod((Black_Mage) job.clone());
         System.out.println("Object after running unstrusted metod on cloned object:");
-        job.printInfo();
+        System.out.println(job);
 
         /**
          * Example of CWE-374
@@ -135,6 +138,6 @@ public class Main {
         System.out.println("\nRunning WITHOUT a cloned object");
         Untrusted.potentiallyDangerousMethod(job);
         System.out.println("Object after running unstrusted metod on mutable object directly");
-        job.printInfo();
+        System.out.println(job);
     }
 }

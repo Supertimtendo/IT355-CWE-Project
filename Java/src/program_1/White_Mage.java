@@ -7,10 +7,10 @@ public class White_Mage extends Job{
      * Prints out info from class obj
      */
     @Override
-    void printInfo(){
-        System.out.println("Class: White Mage");
-        System.out.println("Name: "+name);
-        System.out.println("Name: "+ level);
+    public String toString(){
+        String output = "Class: White Mage";
+        output += super.toString();
+        return output;
     }
     /**
      * Constructor

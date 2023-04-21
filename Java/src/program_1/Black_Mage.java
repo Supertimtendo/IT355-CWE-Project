@@ -8,15 +8,16 @@ public class Black_Mage extends Job{
      * Prints out info from class obj
      */
     @Override
-    void printInfo(){
-        System.out.println("Class: Black Mage");
-        System.out.println("Name: "+name);
-        System.out.println("Level: "+ level);
-        System.out.print("Sensitive Data: ");
+    public String toString(){
+        String output = "Class: Black Mage\n";
+        output += super.toString();
+        output += "Sensitive Data: ";
+        String data = "";
         for(String s:sensitiveData){
-            System.out.print(s + " ");
+            data += s + " ";
         }
-        System.out.println();
+        output += data + '\n';
+        return output;
     }
     /**
      * Constructor

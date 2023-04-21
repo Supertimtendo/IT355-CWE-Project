@@ -9,5 +9,9 @@ abstract class Job {
     String name;
     int level;
 
-    abstract void printInfo();
+    @Override
+    public String toString(){
+        String output = "Name: " + name + "\n" + "Level: " + level + "\n";
+        return output;
+    }
 }
