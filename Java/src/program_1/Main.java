@@ -70,7 +70,7 @@ public class Main {
         catch (FileNotFoundException e) {
             System.err.println("File not found");
             e.printStackTrace();
-            System.exit(1);
+            System.exit(1); // avoids CWE-382 – J2EE Bad Practices: Use of System.exit() since it's in the main method of a non-web application
         }
         return info;
     }
