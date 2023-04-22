@@ -1,6 +1,6 @@
 /**
  * Program 2
- * Authors: Trevor Murphy, Tim Lewis, 
+ * Authors: Trevor Murphy, Tim Lewis, Lucas Beebe
  * -Trevor and Tim L worked together on creating the program via live share so Tim L will not appear in the commit history for that part
  */
 
@@ -48,6 +48,7 @@ public class Main {
     //     System.out.println(i);
     //     System.out.println(employeeArray.get(i).toString());
     // }
+    
 
     while(flag != 1)
     {
@@ -60,6 +61,17 @@ public class Main {
                 break;
             case 1:
                 employeeArray.add(emp.addEmployee());
+                System.out.println(employeeArray.get(employeeArray.size()-1));
+
+                /**
+                 * CWE-595: comparison of Object References Instead of Object Contents. The contents of objects should
+                 * be compared instead of the references. In this case, I added an easter egg to the simulation where the 
+                 * first name of type String obj is compared to a String obj literal by using .equals() instead of '=='
+                 */
+                Employee checkAdmin = employeeArray.get(employeeArray.size()-1);
+                if(checkAdmin.firstName.equals("Admin123")){
+                    System.out.println("This is an Easter Egg");
+                }
                 break;
             case 2:
                 emp.terminateEmployee(employeeArray);

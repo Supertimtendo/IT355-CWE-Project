@@ -1,6 +1,6 @@
 /**
  * Program 2
- * Authors: Trevor Murphy, Tim Lewis, 
+ * Authors: Trevor Murphy, Tim Lewis, Lucas Beebe
  * -Trevor and Tim L worked together on creating the program via live share so Tim L will not appear in the commit history for that part
  */
 
@@ -275,3 +275,9 @@ public class Employee {
 
 
 }
+
+/*
+ * CWE-586 - Explicit Call to Finalize(). In this java program, 
+ * finalize is not explicitly called because it will already be 
+ * run by the garbage collection
+ */
