@@ -3,12 +3,14 @@
 #include <algorithm>
 #include <string>
 #include <limits>
+#include <cstring>
+#include <openssl/sha.h>
 using namespace std;
 
 /**
  * Program to calculate the average of numbers stored in a text file.
  * 
- * Adoptation from original program1.cpp.
+ * Adaptation from original program1.cpp.
  * Some rules in the original program were kept as they are best practices, while unecessary ones for the point of examples were removed
  * 
  * In addition to the original rules, all rules from the implementation section are kept as well 
@@ -27,10 +29,50 @@ using namespace std;
 //always checked prior
 
 const static int MAX_ARRAY_SIZE = 100;
+const static string pwdDir = "app.key";
 int readInData(ifstream &file, int* dest);
 string getUserInput();
 void convertToLongArray(int* src, long* dest);
+bool validatePassword();
 
+/**
+ * Validates whether the user entered password hash matches the previously stored SHA256 password.
+ * @return True if hashses match. False, otherwise.
+*/
+bool validatePassword(){
+    const int bufferSize = 64; // SHA256 hashes are 64 hex characters long or 256 bits
+    
+    /**
+     * Avoids CWE-259: Use of Hard-coded Password
+     * The password is stored in an external file instead of being hard-coded and stored as a string in the source code.
+     * Futhermore, the stored password is hashed to prevent an attacker from gaining access to the password if they were to obtain the app.key file
+    */
+    // Retrieving previous password
+    char hashedPass[bufferSize+1]; // +1 for null character
+    ifstream pwdFile;
+    pwdFile.open(pwdDir);// opens the file
+    pwdFile.read(hashedPass,64);
+    pwdFile.close();
+
+    // Retrieving user input
+    printf("Enter password (default is just pass, but don't tell anyone that):");
+    string input;
+    getline(cin,input);
+
+    // Hashing password
+    SHA256_CTX context;
+    unsigned char md[SHA256_DIGEST_LENGTH];
+    SHA256_Init(&context);
+    SHA256_Update(&context, input.c_str(), input.length());
+    SHA256_Final(md, &context);
+    char inputedHash[bufferSize+1]; // for null character
+    for(int i=0;i<SHA256_DIGEST_LENGTH;i++){
+        sprintf(inputedHash + (i*2),"%02x",md[i]);
+    }
+    
+    // Comparing hashed user input from previously stored password
+    return (strcmp(hashedPass,inputedHash) == 0);
+}
 /**
  * Method to read in data from file
  * @param file File to read from
@@ -111,7 +153,7 @@ void convertToLongArray(int* src, long* dest, int size){
     //No check needed for size, since both arrays will be smaller than MAX_ARRAY_SIZE
     //size variable is also checked prior to calling this method
     for(int i=0;i<size;i++){ // will run n times (as expected) avoiding CWE-193!
-        printf("Ran %d times\n",i); // technique for avoiding CWE-193, so you can observe how many times the loop has ran
+        printf("Ran %d times\n",i+1); // technique for avoiding CWE-193, so you can observe how many times the loop has ran
 
         /**
          * Preventing Integer Coercion Error (CWE-192)
@@ -132,11 +174,19 @@ void convertToLongArray(int* src, long* dest, int size){
 
 /**
  * Main function
- * @return Returns 0
+ * @return Returns 0 on success. Nonzero return value indicates failure.
  */
 int main(){
     int intArray[MAX_ARRAY_SIZE]; 
     long longArray[MAX_ARRAY_SIZE];
+
+    if(validatePassword()){
+        printf("Password validated.\n");
+    }
+    else{ // failed validation
+        fprintf(stderr,"Failed password validation\n");
+        return 1;
+    }
     string fileName = getUserInput(); // returns empty filename if invalid 
     if(!fileName.empty()){
         try {
