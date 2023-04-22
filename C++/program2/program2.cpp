@@ -82,8 +82,16 @@ int main(int argc, char* argv[])
 
     string inputFileName;
     string outputFileName;
-    int numberArray[10] = {0,0,0,0,0,0,0,0,0,0};
-    int calculationNumberArray[10] = {0,0,0,0,0,0,0,0,0,0};
+    const int ARRAY_SIZE = 10;
+    /**
+     * CWE-469: Use of Pointer Subtraction to determine size
+     * 
+     * In this program, a constant size is used to set the sizes of the arrays. This means that 
+     * the size is tracked throughout the program and pointer subtraction does not need to be
+     * used in order to determine the size. 
+     */
+    int numberArray[ARRAY_SIZE] = {0,0,0,0,0,0,0,0,0,0};
+    int calculationNumberArray[ARRAY_SIZE] = {0,0,0,0,0,0,0,0,0,0};
 
     // gather the file name arguments
     if (argc > 3)
@@ -159,6 +167,20 @@ void readTextFile(const string &inFileName, int *numberArray)
         i++;
     }    
 
+    /**
+     * CWE-910: Use of Expired File Descriptor
+     * 
+     * The file is closed after all of the necessary file reads have been made, which guarantees
+     * that the file won't be used again after it is closed because it is local to this function.
+     */
+
+    /**
+     * CWE-1341: Multiple Releases of Same Resource or Handle
+     * 
+     * The file stream is guaranteed to only be released one time because it is not located within a loop and the function
+     * will remain in execution until it gets to the release. Since this file stream is local to this function, it won't be 
+     * closed again outside of it accidentally.
+     */
     // close the file
     infile.close();
 }
