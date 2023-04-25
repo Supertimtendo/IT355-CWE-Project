@@ -5,6 +5,9 @@
 #include <limits>
 #include <cstring>
 #include <openssl/sha.h>
+#include <openssl/evp.h>
+#include <openssl/rand.h>
+
 using namespace std;
 
 /**
@@ -34,44 +37,107 @@ int readInData(ifstream &file, int* dest);
 string getUserInput();
 void convertToLongArray(int* src, long* dest);
 bool validatePassword();
+void savePassword();
+bool fileExists(const string& filename);
+
+/**
+ * Saves a password using SHA256 hashing and a random salt
+*/
+void savePassword(){    
+    /**
+     * Avoids CWE-259: Use of Hard-coded Password
+     * The password is stored in an external file instead of being hard-coded and stored as a string in the source code.
+     * Futhermore, the stored password is hashed to prevent an attacker from gaining access to the password if they were to obtain the app.key file
+    */
+    // Get user input for password
+    string password;
+    cout << "Enter password: ";
+    cin >> password;
+
+    // Generate random salt
+    unsigned char salt[16];
+    if (RAND_bytes(salt, sizeof(salt)) != 1) {
+        cerr << "Error: Failed to generate random salt" << endl;
+        return;
+    }
+
+    // Hash password with salt using SHA256
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    EVP_MD_CTX* mdctx = EVP_MD_CTX_new();
+    if (EVP_DigestInit_ex(mdctx, EVP_sha256(), NULL) != 1) {
+        cerr << "Error: Failed to initialize SHA256 digest" << endl;
+        return;
+    }
+    if (EVP_DigestUpdate(mdctx, password.c_str(), password.size()) != 1) {
+        cerr << "Error: Failed to update SHA256 digest with password" << endl;
+        return;
+    }
+    if (EVP_DigestUpdate(mdctx, salt, sizeof(salt)) != 1) {
+        cerr << "Error: Failed to update SHA256 digest with salt" << endl;
+        return;
+    }
+    if (EVP_DigestFinal_ex(mdctx, hash, NULL) != 1) {
+        cerr << "Error: Failed to finalize SHA256 digest" << endl;
+        return;
+    }
+    EVP_MD_CTX_free(mdctx);
+
+    // Write salt and hash to pwdDir file
+    ofstream outfile(pwdDir, ios::out | ios::binary);
+    if (!outfile) {
+        cerr << "Error: Failed to open pwdDir file for writing" << endl;
+        return;
+    }
+    outfile.write(reinterpret_cast<char*>(salt), sizeof(salt));
+    outfile.write(reinterpret_cast<char*>(hash), sizeof(hash));
+    outfile.close();
+
+    cout << "Password hash and salt stored in pwdDir file" << endl;
+}
 
 /**
  * Validates whether the user entered password hash matches the previously stored SHA256 password.
  * @return True if hashses match. False, otherwise.
 */
 bool validatePassword(){
-    const int bufferSize = 64; // SHA256 hashes are 64 hex characters long or 256 bits
-    
-    /**
-     * Avoids CWE-259: Use of Hard-coded Password
-     * The password is stored in an external file instead of being hard-coded and stored as a string in the source code.
-     * Futhermore, the stored password is hashed to prevent an attacker from gaining access to the password if they were to obtain the app.key file
-    */
-    // Retrieving previous password
-    char hashedPass[bufferSize+1]; // +1 for null character
-    ifstream pwdFile;
-    pwdFile.open(pwdDir);// opens the file
-    pwdFile.read(hashedPass,64);
-    pwdFile.close();
+    // Get user input for password
+    string password;
+    cout << "Enter password: ";
+    cin >> password;
 
-    // Retrieving user input
-    printf("Enter password (default is just pass, but don't tell anyone that):");
-    string input;
-    getline(cin,input);
-
-    // Hashing password
-    SHA256_CTX context;
-    unsigned char md[SHA256_DIGEST_LENGTH];
-    SHA256_Init(&context);
-    SHA256_Update(&context, input.c_str(), input.length());
-    SHA256_Final(md, &context);
-    char inputedHash[bufferSize+1]; // for null character
-    for(int i=0;i<SHA256_DIGEST_LENGTH;i++){
-        sprintf(inputedHash + (i*2),"%02x",md[i]);
+    // Read salt and hash from pwdDir file
+    ifstream infile(pwdDir, ios::in | ios::binary);
+    if (!infile) {
+        cerr << "Error: Failed to open pwdDir file for reading" << endl;
+        return false;
     }
-    
-    // Comparing hashed user input from previously stored password
-    return (strcmp(hashedPass,inputedHash) == 0);
+    unsigned char salt[16];
+    infile.read(reinterpret_cast<char*>(salt), sizeof(salt));
+    unsigned char stored_hash[SHA256_DIGEST_LENGTH];
+    infile.read(reinterpret_cast<char*>(stored_hash), sizeof(stored_hash));
+    infile.close();
+
+    // Hash password with stored salt using SHA256
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    EVP_MD_CTX* mdctx = EVP_MD_CTX_new();
+    if (EVP_DigestInit_ex(mdctx, EVP_sha256(), NULL) != 1) {
+        cerr << "Error: Failed to initialize SHA256 digest" << endl;
+        return false;
+    }
+    if (EVP_DigestUpdate(mdctx, password.c_str(), password.size()) != 1) {
+        cerr << "Error: Failed to update SHA256 digest with password" << endl;
+        return false;
+    }
+    if (EVP_DigestUpdate(mdctx, salt, sizeof(salt)) != 1) {
+        cerr << "Error: Failed to update SHA256 digest with salt" << endl;
+        return false;
+    }
+    if (EVP_DigestFinal_ex(mdctx, hash, NULL) != 1) {
+        cerr << "Error: Failed to finalize SHA256 digest" << endl;
+        return false;
+    }
+    EVP_MD_CTX_free(mdctx);
+    return (memcmp(hash, stored_hash, SHA256_DIGEST_LENGTH) == 0);
 }
 /**
  * Method to read in data from file
@@ -171,6 +237,16 @@ void convertToLongArray(int* src, long* dest, int size){
 
 }
 
+/**
+ * Checks if a file exists at the specified path.
+ *
+ * @param filename the path to the file to check
+ * @return true if the file exists, false otherwise
+ */
+bool fileExists(const string& filename) {
+    ifstream infile(filename);
+    return infile.good();
+}
 
 /**
  * Main function
@@ -179,7 +255,9 @@ void convertToLongArray(int* src, long* dest, int size){
 int main(){
     int intArray[MAX_ARRAY_SIZE]; 
     long longArray[MAX_ARRAY_SIZE];
-
+    if(!fileExists(pwdDir)){
+        savePassword();
+    }
     if(validatePassword()){
         printf("Password validated.\n");
     }
