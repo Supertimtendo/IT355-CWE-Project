@@ -63,12 +63,22 @@ int main(){
     cin >> inputVal;
 
     while(inputVal.compare("0") != 0){
-        
+        /**
+        * CWE-431: Missing Handler
+        * The try catch method can act as a handdler to catch exection and errors that happen in the program.
+        */
+        try{
+        if(inputVal.compare("1") != 1)
+        {
+            throw "Number one was used";;
+        }
         cout << "\nAnalysis: \n";
         cout << "Length: " << inputVal.length() << "\n";
+         /**
+        * CWE-394: Unexpected Status Code or Return Value
+        * Every value given by the method is valeu becuase it only send bool and char valeu everythign else will be taken care of by the handler
+         */
         cout << "Most common char: " <<findCommonChar(inputVal) << "\n";
-
-        
         if(isPalindrome(inputVal)){
             cout << "Is Palindrome: Yes\n";
         }else{
@@ -78,6 +88,22 @@ int main(){
         cout << "\n";
         cout << "Enter a string (enter '0' to quit): ";
         cin >> inputVal;
+        }
+        /**
+        * CWE-391: Unchecked Error Condition/CWE-392: Missing Report of Error Condition
+        * The catch method will runa coutn or .what to give infomation abut the eroor and every error that is cught will do somthign whtich mean
+        * that CWE-391 and CWE-392 are followed
+        */
+        //test case to show that it will catch if 1 is used alone 
+        catch(const char* msg){
+            cout << "Use of the Number one alone";
+            exit(1);
+        }
+        catch(std::logic_error e)
+        {
+            e.what();
+            exit(1);
+        }
     }
 
 }
