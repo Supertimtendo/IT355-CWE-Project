@@ -104,8 +104,23 @@ int main(int argc, char* argv[])
     }
     else if(argc == 3)
     {
+
         inputFileName = argv[1];
         outputFileName = argv[2];
+        ifstream test(inputFileName);
+    /**
+     * CWE-134: Use of Externally-Controlled Format String/CWE-123: Write-what-where Condition
+     * 
+     * In this program the user enter a string value for the input and output file and these are then given to
+     * readTextfile method. The inpput file is checked to make sure that it is a valid file before given to the method to follwow CWE-134.
+     * This also stops the program from reading a bad input from the a user(CWE-123). 
+     * 
+     */
+        if(!test)
+        {
+        cout << "Not a valid input file" << endl;
+        exit(1);
+        }
         readTextFile(inputFileName, numberArray);
 
     }
@@ -197,6 +212,11 @@ void writeNumbersToOutfile(const string &outFileName, int *numberArray)
     }
 
     // Output to file
+     /**
+     * CWE-188: Reliance on Data/Memory Layout
+     * The program does not relay on Memoery or data layout anywhere in the proggram and will find the adress of each 
+     * vlaue by looking for it on the array and it never uses any of the vlaues in the array adress to find a differtn arrays adress.
+     */
     for(int i=0; i< 10;i++){
         outfile << numberArray[i] << endl;
     }
@@ -236,8 +256,24 @@ void add(int *numberArray, int *calculationNumberArray)
     cout << endl << endl;
     cout << "What is the first index you would like to use? ";
     cin >> index1;
+     /**
+     * CWE-123: Write-what-where Condition
+     * Checks that user enter a valid index or will send them back to the main menu.
+     * This will stop a outof bound write/read to error witch lets the program follow rule.
+     * 
+     */
+    if (index1 < 0 || index1 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
     cout << "What is the second index you would like to use? ";
     cin >> index2;
+    if (index2 < 0 || index2 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
 
     cout << "Current calculationNumberArray: ";
     for(int i=0;i<10;i++){
@@ -247,6 +283,11 @@ void add(int *numberArray, int *calculationNumberArray)
 
     cout << "What index would you to store the sum in for answer array? ";
     cin >> index3;
+    if (index3 < 0 || index3 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
     calculationNumberArray[index3] = numberArray[index1] + numberArray[index2];
 
     cout << "Current calculationNumberArray: ";
@@ -269,8 +310,25 @@ void subtract(int *numberArray, int *calculationNumberArray)
     cout << endl << endl;
     cout << "What is the first index you would like to use? ";
     cin >> index1;
+     /**
+     * CWE-123: Write-what-where Condition
+     * Checks that user enter a valid index or will  send them back to the main menu.
+     * This will stop a outof bound write/read to error witch lets the program follow rule.
+     * 
+     */
+    if (index1 < 0 || index1 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
+
     cout << "What is the second index you would like to use? ";
     cin >> index2;
+    if (index2 < 0 || index2 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
 
     cout << "Current calculationNumberArray: ";
     for(int i=0;i<10;i++){
@@ -280,6 +338,19 @@ void subtract(int *numberArray, int *calculationNumberArray)
 
     cout << "What index would you to store the sum in for answer array? ";
     cin >> index3;
+     /**
+     * CWE-123: Write-what-where Condition
+     * Checks that user enter a valid index or will  send them back to the main menu.
+     * This will stop a outof bound write/read to error witch lets the program follow rule.
+     * 
+     */
+    if (index3 < 0 || index3 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
+
+
     calculationNumberArray[index3] = numberArray[index1] - numberArray[index2];
 
     cout << "Current calculationNumberArray: ";
@@ -293,7 +364,7 @@ void subtract(int *numberArray, int *calculationNumberArray)
 
 void divide(int *numberArray, int *calculationNumberArray)
 {
-     int index1;
+    int index1;
     int index2;
     int index3; 
     cout << "Current numberArray: ";
@@ -303,8 +374,25 @@ void divide(int *numberArray, int *calculationNumberArray)
     cout << endl << endl;
     cout << "What is the first index you would like to use? ";
     cin >> index1;
+     /**
+     * CWE-123: Write-what-where Condition
+     * Checks that user enter a valid index or will  send them back to the main menu.
+     * This will stop a outof bound write/read to error witch lets the program follow rule.
+     * 
+     */
+    if (index1 < 0 || index1 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
+
     cout << "What is the second index you would like to use? ";
     cin >> index2;
+    if (index2 < 0 || index2 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
 
     cout << "Current calculationNumberArray: ";
     for(int i=0;i<10;i++){
@@ -314,6 +402,11 @@ void divide(int *numberArray, int *calculationNumberArray)
 
     cout << "What index would you to store the sum in for answer array? ";
     cin >> index3;
+    if (index3 < 0 || index3 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
     calculationNumberArray[index3] = numberArray[index1] / numberArray[index2];
 
     cout << "Current calculationNumberArray: ";
@@ -336,8 +429,25 @@ void multiply(int *numberArray, int *calculationNumberArray)
     cout << endl << endl;
     cout << "What is the first index you would like to use? ";
     cin >> index1;
+     /**
+     * CWE-123: Write-what-where Condition
+     * Checks that user enter a valid index or will  send them back to the main menu.
+     * This will stop a outof bound write/read to error witch lets the program follow rule.
+     * 
+     */
+    if (index1 < 0 || index1 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
+
     cout << "What is the second index you would like to use? ";
     cin >> index2;
+    if (index2 < 0 || index2 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
 
     cout << "Current calculationNumberArray: ";
     for(int i=0;i<10;i++){
@@ -347,6 +457,17 @@ void multiply(int *numberArray, int *calculationNumberArray)
 
     cout << "What index would you to store the sum in for answer array? ";
     cin >> index3;
+     /**
+     * CWE-123: Write-what-where Condition
+     * Checks that user enter a valid index or will  send them back to the main menu.
+     * This will stop a outof bound write/read to error witch lets the program follow rule.
+     * 
+     */
+    if (index3 < 0 || index3 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
     calculationNumberArray[index3] = numberArray[index1] * numberArray[index2];
 
     cout << "Current calculationNumberArray: ";
@@ -370,6 +491,11 @@ void addNumbers(int *numberArray)
     cout << endl << endl;
     cout << "What numberArray index would you like to add a number at? ";
     cin >> index;
+    if (index < 0 || index > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
     cout << "What number would you like to add? ";
     cin >> number;
     
