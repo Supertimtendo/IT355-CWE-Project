@@ -48,13 +48,18 @@ public class Main {
     //     System.out.println(i);
     //     System.out.println(employeeArray.get(i).toString());
     // }
-    
-
+    try{
+    /**
+    * CWE-395: Use of NullPointerException Catch to Detect NULL Pointer Dereference
+    *  The program check for NULL Pointer Dereference and does not use the try catch to handle them for them.
+     */
+    if(emp != null)
+    {
     while(flag != 1)
     {
         Scanner scan = new Scanner(System.in);
         
-        System.out.print("Welcome to the program\n 1: Add New Employee\n 2: Terminate Employee\n 3: Change pay\n 4: Change Employee Details \n 5: Employee look up \n 0: Exit\n Choice: " ); 
+        System.out.print("Welcome to the program\n 1: Add New Employee\n 2: Terminate Employee\n 3: Change pay\n 4: Change Employee Details \n 5: Employee look up \n 6: THGOTG \n 0: Exit\n Choice: " ); 
         int x = scan.nextInt();
         switch(x){
             case 0: flag = 1; 
@@ -85,9 +90,17 @@ public class Main {
             case 5:
                 emp.employeeLookUp(employeeArray);
                 break;
+            case 6:
+                emp.PrintVaribles();
+                break;
             default:
-                System.out.println("\nInvald Input");
-            }
-        }
+                System.out.println("\nInvald Input"); 
+         }
     }
+    }
+    }catch(NullPointerException npe)
+    {      
+    }
+    }
+    
 }

@@ -15,6 +15,13 @@ public class Employee {
     double payRate;
     String startDate,terminationDate;
 
+    /**
+    * CWE-500: Public Static Field Not Marked Final/CWE-493: Critical Public Variable Without Final Modifier
+    * These two types of varibles can never be change by the class or other classes that have acess to the edit thing in the class.
+    */
+    public static final String unchangeableString = "The meaning of life, the universe, and everything is ";
+    public final int unchangeableNumber = 42;
+
     // Used for ID generation
     int currentIDNumber=0;
 
@@ -169,6 +176,17 @@ public class Employee {
                                 System.out.print("Enter percent: ");
                                 percent = scan.nextDouble();
                                 changeInPay = emp.getPayRate()*(percent/100);
+                                /**
+                                * CWE-191: Integer Underflow (Wrap or Wraparound)
+                                * The program will check if payrate will be changed to a negative payrate it will stop the the payrate from being changed.
+                                * Allowing negative number could lead to a Ingter1.
+                                */
+                                if((emp.getPayRate()-changeInPay) < 0 )
+                                {
+                                    System.out.println("\nPayrate cannot be negative.");
+                                    System.out.println("\nPayrate was not updated.");
+                                    break;
+                                }
                                 emp.setPayRate(emp.getPayRate()-changeInPay);
                                 System.out.println("\nPayrate updated.");
                                 break;
@@ -198,8 +216,19 @@ public class Employee {
                             case 2:
                                 System.out.print("Enter decrease: ");
                                 changeInPay = scan.nextDouble();
+                                /**
+                                * CWE-191: Integer Underflow (Wrap or Wraparound)
+                                * The program will check if payrate will be changed to a negative payrate it will stop the the payrate from being changed
+                                */
+                                if((emp.getPayRate()-changeInPay) < 0 )
+                                {
+                                    System.out.println("\nPayrate cannot be negative.");
+                                    System.out.println("\nPayrate was not updated.");
+                                    break;
+                                }
                                 emp.setPayRate(emp.getPayRate()-changeInPay);
                                 System.out.println("\nPayrate updated.");
+                                
                                 break;
                             default:
                                 System.out.println("Invalid Input" );
@@ -273,6 +302,10 @@ public class Employee {
         return null;
     }
 
+    //Printing the final Public varibles to show that they do not change
+    public void PrintVaribles(){
+        System.out.println(unchangeableString + unchangeableNumber);
+    }
 
 }
 
