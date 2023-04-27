@@ -71,6 +71,8 @@ void multiply(int *numberArray, int *calculationNumberArray);
  */
 void addNumbers(int *numberArray);
 
+void displayArray(int *numberArray, int *calculationNumberArray);
+
 /**
  * @brief 
  * 
@@ -147,6 +149,7 @@ int main(int argc, char* argv[])
             case 0: flag = 0; cout << "Exiting Program."; break; 
             case 1: calculations(numberArray, calculationNumberArray); break;
             case 2: addNumbers(numberArray); break;
+            case 3: displayArray(numberArray,calculationNumberArray); break;
             default: cout << "Not a valid input" << endl;
         } // end switch
     } // end while
@@ -483,7 +486,7 @@ void addNumbers(int *numberArray)
     int index;
     int number;
     cout << "Please note, this only does calculations on up to 10 numbers." << endl << endl;
-    cout << "Current numberArray: ";
+     cout << "Current numberArray: ";
     
     for(int i=0;i<10;i++){
         cout << numberArray[i] << " ";
@@ -503,10 +506,44 @@ void addNumbers(int *numberArray)
 
 }
 
+/**
+     * CWE-375- Returning a Mutable Object to an Untrusted Caller 
+     * This program only send the array to methods that need to edit it and all the mehtod that are used in the program are truested.
+     * this mean that a Muta ble object is never sent to a untrusted caller. 
+     */
+void displayArray(int *numberArray, int *calculationNumberArray)
+{
+    int choice;
+    cout << "What Array would you like to Display" << endl;
+    cout << "1: number Array" << endl;
+    cout << "2: calculation Number Array" << endl;
+    cout << "0: exit" << endl;
+    cin >> choice;
+    switch(choice){
+            case 0: break; 
+            case 1: 
+            cout << "Current numberArray: ";
+            for(int i=0;i<10;i++){
+            cout << numberArray[i] << " ";
+            }
+            cout << endl << endl;
+            break;
+            case 2: 
+            cout << "Current calculationNumberArray: ";
+            for(int i=0;i<10;i++){
+            cout << calculationNumberArray[i] << " ";
+            }
+            cout << endl << endl;
+            break;
+            default: cout << "Not a valid input" << endl;
+        } // end switch
+}
+
 void outputMenu()
 {
     cout << "Welcome to the program" << endl;
     cout << "1: Calculations" << endl;
     cout << "2: Add Numbers" << endl;
+    cout << "3: Display an array" << endl;
     cout << "0: Exit Program" << endl;
 }
