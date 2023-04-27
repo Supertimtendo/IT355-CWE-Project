@@ -1,6 +1,6 @@
 /**
  * @brief Program 2
- * Authors: Trevor Murphy, Tim Lewis, 
+ * Authors: Trevor Murphy, Tim Lewis, Lucas Beebe
  * -Trevor and Tim L worked together on creating the program via live share so Tim L will not appear in the commit history for that part
  *
  * 
@@ -43,11 +43,32 @@ int main(int argc, char *argv[]){
     int array_size = 10;
     int array[10];
     char name[20] = "N/A";
+
+    /**
+     * CWE-685: Function Calll with Incorrect Number of Arguements
+     * 
+     * This code correctly calls the fillArray() function with the correct number of arguments
+     * It passes array, which is of the type int[] and array_size which is of the type int. These
+     * match the type of the parameters of the function, which are int[] and int.
+     * 
+     * All functions called in this program are also examples of calling functions
+     * with the correct number of arguments.
+     */
+
     fillArray(array,array_size);
 
     while(flag != 1){
         printf("Current User: %s\n", name);
         printf("Select from menu below:\n1. Fill the with random numbers array.\n2. Display array.\n3. Sort Array.\n4. Change Value in Array.\n5.Enter Name\n0. Exit\nChoice: ");
+        /**
+         * CWE-688: Function Call with Incorrect Variable or Reference as Argument
+         * 
+         * Throughout this program, all functions are called with the correct variables and references. This is mostly due to
+         * there being few other options of variables/references to pass. The logic in this program is simplified
+         * such that the same array is used along with the constant array size. This helps to prevent errors in naming
+         * and variable/reference confusion.
+         * 
+         */
         scanf("%d", &userInput);
         switch(userInput){
         case 0: flag = 1; break;
