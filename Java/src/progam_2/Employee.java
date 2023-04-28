@@ -26,7 +26,12 @@ public class Employee {
     int employeeID;
     double payRate;
     String startDate,terminationDate;
-
+    /**
+     * CWE-492: Use of Inner Class Containing Sensitive Data
+     * 
+     * An inner class is not used to hold any of the sensitive data in the program. This prevents 
+     * sensitiv information from being viewer from outside the class.
+     */
     /**
     * CWE-500: Public Static Field Not Marked Final/CWE-493: Critical Public Variable Without Final Modifier
     * These two types of varibles can never be change by the class or other classes that have acess to the edit thing in the class.
