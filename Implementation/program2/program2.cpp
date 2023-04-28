@@ -57,7 +57,14 @@ bool isPalindrome(string givenString){
 }
 
 int main(){
-    string inputVal;
+    /**
+     * CWE-908: Use of uninitialized Resource
+     * 
+     * The string inputVal is initialized to an empty string before it is used
+     * to ensure that a programmer doesn't accidentally allow for it to be used 
+     * without being initialized first.
+     */
+    string inputVal = "";
 
     cout << "Enter a string (enter '0' to quit): ";
     /**
@@ -67,7 +74,16 @@ int main(){
      * Here the getline() method is used which is not an obsolete function.
      * 
      */
-    getline(cin,inputVal);
+    /**
+     * CWE-252: Unchecked Return Value
+     * 
+     * The return value of getline() is checked to make sure that it read in the user input
+     * successfully. If not, the program terminates.
+    */
+    if(!getline(cin,inputVal)){
+        cout << "ERROR: getline() failed";
+        exit(1);
+    }
     /**
      * CWE-20: Improper Input Validation
      * Checks whether or not the user entered anything.
@@ -77,7 +93,10 @@ int main(){
         while(inputVal.empty()){
             cout << "No string entered." << endl;
             cout << "Enter a string (enter '0' to quit): ";
-            getline(cin,inputVal);
+            if(!getline(cin,inputVal)){
+                cout << "ERROR: getline() failed";
+                exit(1);
+            }
         }
     }
 
@@ -105,7 +124,10 @@ int main(){
         }
         
         cout << "Enter a string (enter '0' to quit): ";
-        getline(cin,inputVal);
+        if(!getline(cin,inputVal)){
+            cout << "ERROR: getline() failed";
+            exit(1);
+        }
         /**
          * CWE-20: Improper Input Validation
          * Checks whether or not the user entered anything.
@@ -115,7 +137,10 @@ int main(){
             while(inputVal.empty()){
                 cout << "No string entered." << endl;
                 cout << "Enter a string (enter '0' to quit): ";
-                getline(cin,inputVal);
+                if(!getline(cin,inputVal)){
+                    cout << "ERROR: getline() failed";
+                    exit(1);
+                }
             }
         }
         }
