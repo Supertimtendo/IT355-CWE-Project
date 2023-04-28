@@ -71,7 +71,7 @@ void divide(int *numberArray, int *calculationNumberArray);
 
 void multiply(int *numberArray, int *calculationNumberArray);
 
-void bitShiftRight(int *numberArray, int *calculationNumberArray);
+void bitShiftLeft(int *numberArray, int *calculationNumberArray);
 
 /**
  * @brief 
@@ -247,6 +247,7 @@ void calculations(int *numberArray, int *calculationNumberArray)
     cout << "2: subtract" << endl;
     cout << "3: divide" << endl;
     cout << "4: multiply" << endl;
+    cout << "5: bit shift left"<<endl;
     cout << "0: exit" << endl;
     cin >> choice;
     switch(choice){
@@ -255,6 +256,7 @@ void calculations(int *numberArray, int *calculationNumberArray)
             case 2: subtract(numberArray, calculationNumberArray); break;
             case 3: divide(numberArray, calculationNumberArray); break;
             case 4: multiply(numberArray, calculationNumberArray); break;
+            case 5: bitShiftLeft(numberArray, calculationNumberArray); break;
             default: cout << "Not a valid input" << endl;
         } // end switch
 }
@@ -503,6 +505,48 @@ void multiply(int *numberArray, int *calculationNumberArray)
     }
     cout << endl << endl;
 
+}
+
+void bitShiftLeft(int *numberArray, int *calculationNumberArray){
+    int index1, index2;
+    for(int i=0;i<10;i++){
+        cout << numberArray[i] << " ";
+    }
+    cout << endl << endl;
+    cout << "On which index would you like to perform a bitwise shift to the left? ";
+    cin >> index1;
+
+    if (index1 < 0 || index1 > 9)
+    {
+        cout << "Invald Index sending user back to Main menu"<< endl;
+        return;
+    }
+
+    cout << "Current calculationNumberArray: ";
+    for(int i=0;i<10;i++){
+        cout << calculationNumberArray[i] << " ";
+    }
+    cout << endl << endl;
+
+    cout << "What index would you to store the result in for answer array? ";
+    cin >> index2;
+
+    /**
+     * CWE-1335: Incorrect Bitwise Shift of Integer
+     * 
+     * This function, which performs a bitwise shift to the left of an integer in the given array
+     * is guaranteed to produce the correct result because the shift amount is a constant 1 and 
+     * the input is verified to not be too large which would cause a integer overflow.
+     */
+    if(numberArray[index1] < 20000){
+        calculationNumberArray[index2] = numberArray[index1] << 1;
+    }
+
+    cout << "Current calculationNumberArray: ";
+    for(int i=0;i<10;i++){
+        cout << calculationNumberArray[i] << " ";
+    }
+    cout << endl << endl;
 }
 
 void addNumbers(int *numberArray)
