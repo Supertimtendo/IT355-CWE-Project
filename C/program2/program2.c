@@ -84,6 +84,12 @@ void mergeSort(int array[], int array_size){
      * Calls free on pointer to release the memory allocated for it.
      * 
      */
+    /**
+     * CWE-416: Use After Free
+     * 
+     * The tmpArray is freed and then it is not used again after. Because the tmpArray is local and is not in a loop or other construct
+     * it will always be called and the memory will be freed without any chance of it accidentally being used again.
+    */
     free(tmpArray);
 }
 
@@ -158,6 +164,13 @@ void changeArray(int array[], int array_size)
     */
     printf("Enter the index of the number you want to change:");
     scanf("%d", &index);
+    /**
+     * CWE-783: Operator Precedence Logic Error
+     * 
+     * Here operator is precendence is used in the if statement. Because we know that the 
+     * index < 0 will be checked and if it is false then index > 9 will be checked. In this case,
+     * if either of them are true, the part inside will execute.
+     */
     if(index < 0 || index > 9)
     {
         printf("Invaild input\n");
