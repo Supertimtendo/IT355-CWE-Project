@@ -18,6 +18,21 @@ public class Main {
 
     Employee emp1 = new Employee("t", "t", "t", 0, 1, "1", "1");
     Employee emp2 = new Employee(",", ",", ",", 1, 1, "1", "1");
+
+    //comparin emp1 and emp2
+
+    /**
+     * CWE-486: Comparison of Classes by Name
+     * 
+     * In this if statement, the two employees created above are compared, but before that happens a check 
+     * is made to make sure that both of these objects are of type Employee by actually comparing the class
+     * to Employee.class instead of just using the name.
+     */
+    if(emp1.getClass() == Employee.class && emp2.getClass() == Employee.class){
+        if(emp1.getFirstName().equals(emp2.getLastName()) && emp1.getLastName().equals(emp2.getLastName()) && emp1.getMiddleInitial().equals(emp2.getMiddleInitial())){
+            System.out.println("Employee 1 and Employee 2 have the same names");
+        }
+    }
     // Employee emp3 = new Employee(";", ";", ";", 0, 1, "1", "1");
     // Employee emp4 = new Employee("m", "m", "m", 0, 1, "1", "1");
 
