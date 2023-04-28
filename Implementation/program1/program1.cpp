@@ -115,6 +115,12 @@ bool validatePassword(){
     infile.read(reinterpret_cast<char*>(salt), sizeof(salt));
     unsigned char stored_hash[SHA256_DIGEST_LENGTH];
     infile.read(reinterpret_cast<char*>(stored_hash), sizeof(stored_hash));
+    /**
+     * CWE-459: Incomplete Cleanup
+     * 
+     * Here the file stream is released. All temporary resources are
+     * released in our programs.
+     */
     infile.close();
 
     // Hash password with stored salt using SHA256
