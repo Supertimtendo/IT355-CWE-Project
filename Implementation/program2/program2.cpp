@@ -60,6 +60,13 @@ int main(){
     string inputVal;
 
     cout << "Enter a string (enter '0' to quit): ";
+    /**
+     * CWE-477: Use of Obsolete Function
+     * 
+     * None of the functions used in this program are obsolete or deemed too unsafe to use.
+     * Here the getline() method is used which is not an obsolete function.
+     * 
+     */
     getline(cin,inputVal);
     /**
      * CWE-20: Improper Input Validation
