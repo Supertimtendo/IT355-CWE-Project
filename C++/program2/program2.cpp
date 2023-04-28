@@ -1,6 +1,6 @@
 /**
  * @file Main.cpp
- * @author Trevor Murphy & Tim Lewis
+ * @author Trevor Murphy & Tim Lewis & Lucas Beebe
  * -Tim L will not appear in commits as we worked together via Live Share
  * @brief does calculations on no more than 10 numbers
  * @version 0.1
@@ -47,6 +47,20 @@ void readTextFile(const string &inFileName, int *numberArray);
  */
 void writeNumbersToOutfile(const string &outFileName, int *numberArray);
 
+/**
+ * @brief 
+ * 
+ * @param numberArray 
+ * 
+ * Rules Implemented:
+ * CWE - 415 | Don't double free
+ * CWE - 468 | Math with pointers
+ * CWE - 493 | Final variable
+ * CWE - 188 | Memory Address
+ * CWE - 123 | Buffer overflow check
+ * CWE - 197 | Dont cast higher primitive type to lower primitive type
+ * CWE - 787 | Out of bounds write
+ */
 void calculations(int *numberArray, int *calculationNumberArray);
 
 void add(int *numberArray, int *calculationNumberArray);
@@ -56,6 +70,8 @@ void subtract(int *numberArray, int *calculationNumberArray);
 void divide(int *numberArray, int *calculationNumberArray);
 
 void multiply(int *numberArray, int *calculationNumberArray);
+
+void bitShiftRight(int *numberArray, int *calculationNumberArray);
 
 /**
  * @brief 
@@ -272,7 +288,7 @@ void add(int *numberArray, int *calculationNumberArray)
     */
    /**
     * 
-   */
+     */
     if (index1 < 0 || index1 > 9)
     {
         cout << "Invald Index sending user back to Main menu"<< endl;
