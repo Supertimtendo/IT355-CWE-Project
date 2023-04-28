@@ -7,27 +7,11 @@
  * @param argc 
  * @param argv 
  * @return int 
- * 
- * 
- * Rules To Be Implemented:
- * 
- * CWE-401 – Missing Release of Memory after Effective Lifetime 
- * CWE-482 – Comparing Instead of Assigning
- * CWE-587 – Assignment of a Fixed Address to a Pointer  
- * CWE-704 – Incorrect Type Conversion or Cast 
- * CWE-463 – Deletion of Data Structure Sentinel 
- * CWE-464 – Addition of Data Structure Sentinel 
- * CWE-466 – Return of Pointer Value Outside of Expected Range 
- * CWE-839 – Numeric Range Comparison Without Minimum Check 
- * CWE-783 – Operator Precedence Logic Error 
- * CWE-416 – Use After Free 
- * CWE-685 – Function Call with Incorrect Number of Arguments 
- * CWE-688 – Function Call with Incorrect Variable or Reference as Argument 
- * 
+ *  
  */
 
 #include <stdio.h>
-#include <cstdlib>
+#include <stdlib.h>
 
 void mergeSort(int array[], int array_size);
 void mergeSort(int array[], int tmpArray[], int left, int right);
@@ -96,6 +80,12 @@ void mergeSort(int array[], int array_size){
     */
     int *tmpArray = (int*)malloc(sizeof(int) * array_size);
     mergeSort(array,tmpArray,0,array_size-1);
+    /**
+     * CWE-401: Missing Release of Memory after Effective Lifetime
+     * Calls free on pointer to release the memory allocated for it.
+     * 
+     */
+    free(tmpArray);
 }
 
 void mergeSort(int array[], int tmpArray[], int left, int right){

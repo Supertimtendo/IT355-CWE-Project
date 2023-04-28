@@ -6,23 +6,8 @@
 
 package progam_2;
 import java.util.Scanner;
-
 import javax.print.attribute.standard.MediaSize.NA;
-
 import java.util.ArrayList;
-
-/**
- * Rules To Be Implemented
- * 
- * CWE-382 – J2EE Bad Practices: Use of System.exit() 
- * CWE-476 – NULL Pointer Dereference 
- * CWE-478 – Missing Default Case In Multiple Condition Expression 
- * CWE-481 – Assigning Instead of Comparing 
- * CWE-191 – Integer Underflow (Wrap or Wraparound) 
- * CWE-395 – Use of Null Pointer Exception Catch to Detect NULL Pointer Dereference 
- * CWE-486 – Comparison of Classes by Name 
- * CWE-500 – Public Static Field not Marked Final 
- */
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +16,6 @@ public class Main {
     Employee emp = new Employee();
     ArrayList<Employee> employeeArray = new ArrayList<Employee>();
 
-    // ArrayList<Employee> employeeArray = new ArrayList<Employee>();
     Employee emp1 = new Employee("t", "t", "t", 0, 1, "1", "1");
     Employee emp2 = new Employee(",", ",", ",", 1, 1, "1", "1");
     // Employee emp3 = new Employee(";", ";", ";", 0, 1, "1", "1");
@@ -42,12 +26,6 @@ public class Main {
     // employeeArray.add(emp3);
     // employeeArray.add(emp4);
 
-    // System.out.println(employeeArray.size());
-
-    // for(int i=0;i<employeeArray.size();i++){
-    //     System.out.println(i);
-    //     System.out.println(employeeArray.get(i).toString());
-    // }
     try{
     /**
     * CWE-395: Use of NullPointerException Catch to Detect NULL Pointer Dereference

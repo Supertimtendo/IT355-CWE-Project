@@ -10,6 +10,16 @@
  * 
  */
 
+/**
+ * Rules Followed Throughout File:
+ * CWE 197 - Numeric Truncation Error
+ * -No variables are downcast to a smaller primitive type therefore this error will not occur.
+ * 
+ * CWE 415 - Double Free
+ * -No variables are freed multiple times
+ * 
+ */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -37,20 +47,6 @@ void readTextFile(const string &inFileName, int *numberArray);
  */
 void writeNumbersToOutfile(const string &outFileName, int *numberArray);
 
-/**
- * @brief 
- * 
- * @param numberArray 
- * 
- * Rules Implemented:
- * CWE - 415 | Don't double free
- * CWE - 468 | Math with pointers
- * CWE - 493 | Final variable
- * CWE - 188 | Memory Address
- * CWE - 123 | Buffer overflow check
- * CWE - 197 | Dont cast higher primitive type to lower primitive type
- * CWE - 787 | Out of bounds write
- */
 void calculations(int *numberArray, int *calculationNumberArray);
 
 void add(int *numberArray, int *calculationNumberArray);
@@ -264,7 +260,19 @@ void add(int *numberArray, int *calculationNumberArray)
      * Checks that user enter a valid index or will send them back to the main menu.
      * This will stop a outof bound write/read to error witch lets the program follow rule.
      * 
+     * CWE-468: Incorrect Pointer Scaling
+     * Asks for indexes as opposed to assigning variables through direct pointer manipulation.
+     * 
+     * CWE-787: Out-of-Bounds Write
+     * Asks user for valid index range therefore there is no risk of a value being written to
+     * a non-existent array index. 
      */
+    /**
+     
+    */
+   /**
+    * 
+   */
     if (index1 < 0 || index1 > 9)
     {
         cout << "Invald Index sending user back to Main menu"<< endl;

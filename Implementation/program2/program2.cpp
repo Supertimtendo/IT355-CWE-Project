@@ -3,7 +3,7 @@
  * a given input is a palindrome, how many characters are used, and which 
  * character appears most.
  * 
- * By Lucas Beebe
+ * Authors: Lucas Beebe, Trevor Murphy
  * 
  * 
  */
@@ -60,7 +60,19 @@ int main(){
     string inputVal;
 
     cout << "Enter a string (enter '0' to quit): ";
-    cin >> inputVal;
+    getline(cin,inputVal);
+    /**
+     * CWE-20: Improper Input Validation
+     * Checks whether or not the user entered anything.
+     * Prevents data misinput.
+     */
+    if(inputVal.empty()){
+        while(inputVal.empty()){
+            cout << "No string entered." << endl;
+            cout << "Enter a string (enter '0' to quit): ";
+            getline(cin,inputVal);
+        }
+    }
 
     while(inputVal.compare("0") != 0){
         /**
@@ -85,9 +97,20 @@ int main(){
             cout << "Is Palindrome: No\n";
         }
         
-        cout << "\n";
         cout << "Enter a string (enter '0' to quit): ";
-        cin >> inputVal;
+        getline(cin,inputVal);
+        /**
+         * CWE-20: Improper Input Validation
+         * Checks whether or not the user entered anything.
+         * Prevents data misinput.
+         */
+        if(inputVal.empty()){
+            while(inputVal.empty()){
+                cout << "No string entered." << endl;
+                cout << "Enter a string (enter '0' to quit): ";
+                getline(cin,inputVal);
+            }
+        }
         }
         /**
         * CWE-391: Unchecked Error Condition/CWE-392: Missing Report of Error Condition

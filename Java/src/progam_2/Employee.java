@@ -8,6 +8,18 @@ package progam_2;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/*
+ * CWE 478 - Missing Default Case in Multiple Condition Expression
+ * -Throughout the program, each switch and if/else statements include a default case.
+ * -This results in more concise code and predictable output. 
+ * -Rather than include this comment in every MC expression, it's mentioned here.
+ */
+
+ /*
+  * CWE 481 - Assigning Instead of Comparing
+  * -No variables are assigned incorrectly.
+  */
+
 
 public class Employee {
     String firstName,lastName,middleInitial;
@@ -147,6 +159,12 @@ public class Employee {
         Scanner scan = new Scanner(System.in);
         Employee emp = employeeLookUp(employeeArray);
         double percent,changeInPay,payRate;
+        /*
+         *CWE- 476 NULL Pointer Dereference
+         * Java does not have direct support for pointers so this was an odd rule to see.
+         * Nevertheless, the emp object is treated as a reference here. If the reference
+         * is null, nothing occurs and no code other than an error message is printed.
+         */
         if(emp == null){
             System.out.println("Employee not found.");
         }else{
