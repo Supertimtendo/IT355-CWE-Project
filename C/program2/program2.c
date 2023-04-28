@@ -75,8 +75,7 @@ int main(int argc, char *argv[]){
 void mergeSort(int array[], int array_size){
     /**
      * CWE-466: Return of Pointer Value Outside of Expected Range
-    *The merge sort will send the adress of the array of the and the size and it never gets a out of bounds check becuase it checkes that the adress f the array
-    that it poitns to is correct
+    * The merge sort will always pass the size of the array to every method and this will prevent the merge sort methods from returning or entering a value in a unexpected Range.
     */
     int *tmpArray = (int*)malloc(sizeof(int) * array_size);
     mergeSort(array,tmpArray,0,array_size-1);
